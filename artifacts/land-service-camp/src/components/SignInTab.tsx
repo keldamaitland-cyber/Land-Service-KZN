@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { SignInRecord } from "../App";
 
 const SHEET_WEBHOOK_URL = import.meta.env.VITE_SHEET_WEBHOOK_URL || "YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
 
@@ -21,7 +22,11 @@ async function postToSheet(data: object) {
   }
 }
 
-export default function SignInTab() {
+interface Props {
+  onSignIn: (record: SignInRecord) => void;
+}
+
+export default function SignInTab({ onSignIn }: Props) {
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({
     name: "", region: "", role: "", phone: "", emergency: "", medical: ""
@@ -33,7 +38,12 @@ export default function SignInTab() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    await postToSheet({ type: "signin", timestamp: new Date().toISOString(), ...form });
+    const record: SignInRecord = {
+      timestamp: new Date().toISOString(),
+      ...form,
+    };
+    await postToSheet({ type: "signin", ...record });
+    onSignIn(record);
     setSubmitted(true);
   }
 
@@ -121,7 +131,7 @@ export default function SignInTab() {
           </form>
         ) : (
           <div className="success-msg">
-            ✦ You're signed in! Your details have been recorded. Welcome to Camp! ✦
+            ✦ You are signed in! Your details have been recorded. Welcome to Camp! ✦
           </div>
         )}
         <div className="sheet-link">

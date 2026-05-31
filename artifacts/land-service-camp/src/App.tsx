@@ -1,34 +1,76 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import SignInTab from "./components/SignInTab";
 import ScheduleTab from "./components/ScheduleTab";
 import RichmondHistoryTab from "./components/RichmondHistoryTab";
 import KZNTriviaTab from "./components/KZNTriviaTab";
 import ArtsAndCraftsTab from "./components/ArtsAndCraftsTab";
 import FeedbackTab from "./components/FeedbackTab";
+import AdminTab from "./components/AdminTab";
 
-const tabs = [
-  { id: "signin", label: "📋 Sign In" },
-  { id: "schedule", label: "📅 Schedule" },
-  { id: "richmond", label: "🏛️ Richmond History" },
-  { id: "trivia", label: "🌍 KZN Trivia" },
-  { id: "crafts", label: "🎨 Arts & Crafts" },
-  { id: "feedback", label: "💬 Feedback" },
-];
+export interface SignInRecord {
+  timestamp: string;
+  name: string;
+  region: string;
+  role: string;
+  phone: string;
+  emergency: string;
+  medical: string;
+}
 
-function TabContent({ activeTab }: { activeTab: string }) {
-  switch (activeTab) {
-    case "signin": return <SignInTab />;
-    case "schedule": return <ScheduleTab />;
-    case "richmond": return <RichmondHistoryTab />;
-    case "trivia": return <KZNTriviaTab />;
-    case "crafts": return <ArtsAndCraftsTab />;
-    case "feedback": return <FeedbackTab />;
-    default: return <SignInTab />;
+const STORAGE_KEY = "lskzn_signins";
+
+function loadSignIns(): SignInRecord[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
   }
 }
 
+function saveSignIns(records: SignInRecord[]) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+}
+
+const tabs = [
+  { id: "signin",   label: "📋 Sign In" },
+  { id: "schedule", label: "📅 Schedule" },
+  { id: "richmond", label: "🏛️ Richmond History" },
+  { id: "trivia",   label: "🌍 KZN Trivia" },
+  { id: "crafts",   label: "🎨 Arts & Crafts" },
+  { id: "feedback", label: "💬 Feedback" },
+  { id: "admin",    label: "🔐 Admin" },
+];
+
 export default function App() {
   const [activeTab, setActiveTab] = useState("signin");
+  const [signIns, setSignIns] = useState<SignInRecord[]>(loadSignIns);
+
+  const handleNewSignIn = useCallback((record: SignInRecord) => {
+    setSignIns((prev) => {
+      const updated = [...prev, record];
+      saveSignIns(updated);
+      return updated;
+    });
+  }, []);
+
+  const handleClear = useCallback(() => {
+    setSignIns([]);
+    localStorage.removeItem(STORAGE_KEY);
+  }, []);
+
+  function renderTab() {
+    switch (activeTab) {
+      case "signin":   return <SignInTab onSignIn={handleNewSignIn} />;
+      case "schedule": return <ScheduleTab />;
+      case "richmond": return <RichmondHistoryTab />;
+      case "trivia":   return <KZNTriviaTab />;
+      case "crafts":   return <ArtsAndCraftsTab />;
+      case "feedback": return <FeedbackTab />;
+      case "admin":    return <AdminTab signIns={signIns} onClear={handleClear} />;
+      default:         return <SignInTab onSignIn={handleNewSignIn} />;
+    }
+  }
 
   return (
     <>
@@ -70,13 +112,28 @@ export default function App() {
               onClick={() => setActiveTab(tab.id)}
             >
               {tab.label}
+              {tab.id === "admin" && signIns.length > 0 && (
+                <span style={{
+                  marginLeft: 6,
+                  background: "var(--forest-light)",
+                  color: "var(--gold-pale)",
+                  borderRadius: "10px",
+                  padding: "1px 7px",
+                  fontSize: "0.7rem",
+                  fontFamily: "'Lato', sans-serif",
+                  fontWeight: 700,
+                  letterSpacing: 0,
+                }}>
+                  {signIns.length}
+                </span>
+              )}
             </button>
           ))}
         </nav>
 
         <div className="camp-content">
           <div className="tab-panel" key={activeTab}>
-            <TabContent activeTab={activeTab} />
+            {renderTab()}
           </div>
         </div>
 
