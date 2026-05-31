@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Land Service KZN National Camp 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --forest: #1a4731;
+      --forest-mid: #236040;
+      --forest-light: #2d7a52;
+      --gold: #c9a227;
+      --gold-light: #e8c35a;
+      --gold-pale: #f5e4a0;
+      --white: #fdfaf3;
+      --off-white: #f0ead6;
+      --dark: #0e2a1c;
+      --shadow: rgba(14, 42, 28, 0.4);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── BACKGROUND ── */
+    .bg-canvas {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 120% 80% at 10% 20%, rgba(26,71,49,0.95) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 100% at 90% 80%, rgba(35,96,64,0.8) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 60% at 50% 50%, rgba(201,162,39,0.06) 0%, transparent 70%),
+        linear-gradient(160deg, #0a1f13 0%, #112b1d 40%, #0e2318 100%);
+    }
+    .bg-canvas::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 35%, rgba(201,162,39,0.12) 0%, transparent 25%),
+        radial-gradient(circle at 80% 65%, rgba(201,162,39,0.08) 0%, transparent 20%),
+        radial-gradient(circle at 60% 15%, rgba(45,122,82,0.2) 0%, transparent 30%);
+    }
+    .leaves-bg {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cellipse cx='100' cy='60' rx='15' ry='40' fill='none' stroke='%23c9a227' stroke-width='1.5' transform='rotate(-30 100 60)'/%3E%3Cellipse cx='60' cy='130' rx='12' ry='35' fill='none' stroke='%23c9a227' stroke-width='1.5' transform='rotate(20 60 130)'/%3E%3Cellipse cx='150' cy='150' rx='10' ry='30' fill='none' stroke='%23c9a227' stroke-width='1' transform='rotate(-15 150 150)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    /* ── LAYOUT ── */
+    #app { position: relative; z-index: 1; min-height: 100vh; }
+
+    /* ── HEADER ── */
+    header {
+      text-align: center;
+      padding: 48px 24px 32px;
+      position: relative;
+    }
+    .badge-ring {
+      display: inline-block;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      padding: 6px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 30px rgba(201,162,39,0.25);
+    }
+    .badge-ring svg { display: block; }
+    .header-eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.32em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    header h1 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.5rem, 5vw, 3rem);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.15;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    }
+    header h1 span { color: var(--gold-light); }
+    .header-sub {
+      font-family: 'Cinzel', serif;
+      font-size: 0.88rem;
+      color: var(--gold-pale);
+      letter-spacing: 0.18em;
+      margin-top: 10px;
+    }
+    .divider {
+      display: flex; align-items: center; gap: 16px;
+      max-width: 400px; margin: 20px auto 0;
+    }
+    .divider-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+    .divider-diamond { width: 8px; height: 8px; background: var(--gold); transform: rotate(45deg); flex-shrink: 0; }
+
+    /* ── NAV TABS ── */
+    nav {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 6px; padding: 16px 16px 0;
+      max-width: 900px; margin: 0 auto;
+    }
+    .tab-btn {
+      font-family: 'Cinzel', serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 10px 20px;
+      border: 1px solid rgba(201,162,39,0.35);
+      background: rgba(26,71,49,0.4);
+      color: var(--gold-pale);
+      cursor: pointer;
+      border-radius: 3px;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(6px);
+    }
+    .tab-btn:hover {
+      background: rgba(201,162,39,0.15);
+      border-color: var(--gold);
+      color: var(--gold-light);
+    }
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+      color: var(--dark);
+      border-color: var(--gold-light);
+      font-weight: 700;
+      box-shadow: 0 4px 16px rgba(201,162,39,0.3);
+    }
+
+    /* ── CONTENT AREA ── */
+    .content { max-width: 860px; margin: 0 auto; padding: 28px 20px 60px; }
+    .tab-panel { display: none; animation: fadeUp 0.35s ease both; }
+    .tab-panel.active { display: block; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── PANEL CARD ── */
+    .card {
+      background: rgba(26,71,49,0.35);
+      border: 1px solid rgba(201,162,39,0.2);
+      border-radius: 8px;
+      padding: 28px 32px;
+      backdrop-filter: blur(10px);
+      margin-bottom: 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    .card-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      color: var(--gold-light);
+      letter-spacing: 0.1em;
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(201,162,39,0.2);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .card-title .icon { font-size: 1.2rem; }
+
+    /* ── SIGN IN PANEL ── */
+    .form-group { margin-bottom: 18px; }
+    label {
+      display: block;
+      font-family: 'Cinzel', serif;
+      font-size: 0.76rem;
+      letter-spacing: 0.14em;
+      color: var(--gold-pale);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(14,42,28,0.6);
+      border: 1px solid rgba(201,162,39,0.3);
+      border-radius: 4px;
+      color: var(--white);
+      font-family: 'Lato', sans-serif;
+      font-size: 0.95rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,162,39,0.15);
+    }
+    input::placeholder, textarea::placeholder { color: rgba(253,250,243,0.35); }
+    select option { background: #112b1d; }
+    textarea { resize: vertical; min-height: 90px; }
+
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+      color: var(--dark);
+      border: none;
+      border-radius: 4px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 16px rgba(201,162,39,0.25);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(201,162,39,0.4);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    .sheet-link {
+      display: flex; align-items: center; gap: 10px;
+      margin-top: 14px;
+      padding: 12px 16px;
+      background: rgba(201,162,39,0.08);
+      border: 1px dashed rgba(201,162,39,0.35);
+      border-radius: 4px;
+      font-size: 0.85rem;
+      color: var(--gold-pale);
+    }
+    .sheet-link a { color: var(--gold-light); text-decoration: underline; }
+    .success-msg {
+      display: none;
+      text-align: center;
+      padding: 16px;
+      background: rgba(45,122,82,0.3);
+      border: 1px solid var(--forest-light);
+      border-radius: 4px;
+      color: #a8f0c6;
+      font-family: 'Cinzel', serif;
+      font-size: 0.88rem;
+      letter-spacing: 0.1em;
+      margin-top: 14px;
+    }
+
+    /* ── INFO GRID ── */
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 560px) { .info-grid { grid-template-columns: 1fr; } }
+    .info-item {
+      background: rgba(14,42,28,0.5);
+      border: 1px solid rgba(201,162,39,0.15);
+      border-radius: 6px;
+      padding: 14px 16px;
+    }
+    .info-item .label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .info-item .value { font-size: 0.92rem; color: var(--white); line-height: 1.4; }
+
+    /* ── TRIVIA ── */
+    .trivia-section { margin-bottom: 22px; }
+    .trivia-heading {
+      font-family: 'Cinzel', serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .trivia-heading::after { content: ''; flex: 1; height: 1px; background: rgba(201,162,39,0.2); }
+    .trivia-list { list-style: none; }
+    .trivia-list li {
+      padding: 10px 0 10px 20px;
+      border-bottom: 1px solid rgba(201,162,39,0.08);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: var(--off-white);
+      position: relative;
+    }
+    .trivia-list li::before {
+      content: '◆';
+      position: absolute; left: 0;
+      color: var(--gold);
+      font-size: 0.55rem;
+      top: 13px;
+    }
+    .trivia-list li strong { color: var(--gold-light); }
+
+    /* ── HISTORY TIMELINE ── */
+    .timeline { position: relative; padding-left: 28px; }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 6px; top: 4px; bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--gold), transparent);
+    }
+    .timeline-item { position: relative; margin-bottom: 22px; }
+    .timeline-item::before {
+      content: '';
+      position: absolute; left: -25px; top: 5px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: 2px solid var(--dark);
+      box-shadow: 0 0 8px rgba(201,162,39,0.5);
+    }
+    .timeline-year {
+      font-family: 'Cinzel', serif;
+      font-size: 0.76rem;
+      letter-spacing: 0.14em;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+    .timeline-text { font-size: 0.9rem; line-height: 1.55; color: var(--off-white); }
+    .timeline-text strong { color: var(--gold-pale); }
+
+    /* ── ARTS & CRAFTS ── */
+    .craft-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+    .craft-card {
+      background: rgba(14,42,28,0.55);
+      border: 1px solid rgba(201,162,39,0.15);
+      border-radius: 6px;
+      padding: 14px 16px;
+      transition: border-color 0.2s, transform 0.2s;
+      cursor: default;
+    }
+    .craft-card:hover { border-color: rgba(201,162,39,0.5); transform: translateY(-2px); }
+    .craft-icon { font-size: 1.4rem; margin-bottom: 6px; }
+    .craft-name { font-family: 'Cinzel', serif; font-size: 0.78rem; color: var(--gold-light); letter-spacing: 0.08em; line-height: 1.4; }
+    .craft-desc { font-size: 0.8rem; color: rgba(253,250,243,0.65); margin-top: 4px; line-height: 1.4; }
+
+    /* ── FEEDBACK FORM ── */
+    .stars { display: flex; gap: 8px; margin-bottom: 6px; }
+    .star {
+      font-size: 1.6rem; cursor: pointer; color: rgba(201,162,39,0.3);
+      transition: color 0.15s; user-select: none; line-height: 1;
+    }
+    .star.active, .star:hover { color: var(--gold); }
+    .rating-label { font-size: 0.78rem; color: var(--gold-pale); margin-top: 2px; min-height: 18px; }
+    .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; }
+    .checkbox-item { display: flex; align-items: center; gap: 8px; }
+    .checkbox-item input[type="checkbox"] {
+      width: 16px; height: 16px; cursor: pointer;
+      accent-color: var(--gold);
+    }
+    .checkbox-item label {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.88rem;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--off-white);
+      cursor: pointer;
+    }
+
+    /* ── SCHEDULE ── */
+    .schedule-day { margin-bottom: 24px; }
+    .schedule-day-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      padding: 6px 12px;
+      background: rgba(201,162,39,0.1);
+      border-left: 3px solid var(--gold);
+      border-radius: 0 4px 4px 0;
+    }
+    .schedule-row {
+      display: grid; grid-template-columns: 90px 1fr;
+      gap: 12px; padding: 8px 4px;
+      border-bottom: 1px solid rgba(201,162,39,0.07);
+      font-size: 0.88rem;
+    }
+    .schedule-time { color: var(--gold-pale); font-weight: 700; }
+    .schedule-event { color: var(--off-white); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      color: rgba(201,162,39,0.4);
+      text-transform: uppercase;
+      border-top: 1px solid rgba(201,162,39,0.1);
+    }
+  </style>
+</head>
+<body>
+<div class="bg-canvas"></div>
+<div class="leaves-bg"></div>
+
+<div id="app">
+  <header>
+    <div class="badge-ring">
+      <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="28" cy="28" r="26" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+        <circle cx="28" cy="28" r="20" fill="rgba(26,71,49,0.8)" stroke="#c9a227" stroke-width="0.5"/>
+        <!-- Tree -->
+        <polygon points="28,10 38,28 18,28" fill="#c9a227" opacity="0.9"/>
+        <polygon points="28,18 36,32 20,32" fill="#c9a227" opacity="0.8"/>
+        <polygon points="28,24 35,36 21,36" fill="#c9a227" opacity="0.7"/>
+        <rect x="26" y="36" width="4" height="7" fill="#c9a227" opacity="0.85"/>
+        <!-- Stars -->
+        <text x="14" y="24" font-size="5" fill="#c9a227" opacity="0.7">✦</text>
+        <text x="38" y="24" font-size="5" fill="#c9a227" opacity="0.7">✦</text>
+      </svg>
+    </div>
+    <div class="header-eyebrow">KwaZulu-Natal · 2026</div>
+    <h1>Land Service<br/><span>National Camp</span></h1>
+    <div class="header-sub">Richmond · KZN · Building Tomorrow's Leaders</div>
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-diamond"></div>
+      <div class="divider-line"></div>
+    </div>
+  </header>
+
+  <nav>
+    <button class="tab-btn active" onclick="showTab('signin')">📋 Sign In</button>
+    <button class="tab-btn" onclick="showTab('schedule')">📅 Schedule</button>
+    <button class="tab-btn" onclick="showTab('richmond')">🏛️ Richmond History</button>
+    <button class="tab-btn" onclick="showTab('trivia')">🌍 KZN Trivia</button>
+    <button class="tab-btn" onclick="showTab('crafts')">🎨 Arts & Crafts</button>
+    <button class="tab-btn" onclick="showTab('feedback')">💬 Feedback</button>
+  </nav>
+
+  <div class="content">
+
+    <!-- ══ SIGN IN ══ -->
+    <div id="tab-signin" class="tab-panel active">
+      <div class="card">
+        <div class="card-title"><span class="icon">📋</span> Camper Sign In</div>
+        <form id="signinForm">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="si-name" placeholder="Enter your full name" required />
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+            <div class="form-group">
+              <label>Region / Group</label>
+              <select id="si-region">
+                <option value="">— Select Region —</option>
+                <option>Durban North</option>
+                <option>Durban South</option>
+                <option>Pietermaritzburg</option>
+                <option>Richards Bay</option>
+                <option>Ladysmith</option>
+                <option>Newcastle</option>
+                <option>South Coast</option>
+                <option>Midlands</option>
+                <option>Other KZN</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Role</label>
+              <select id="si-role">
+                <option value="">— Select Role —</option>
+                <option>Camper (Youth)</option>
+                <option>Junior Leader</option>
+                <option>Senior Leader</option>
+                <option>Group Leader</option>
+                <option>Volunteer / Staff</option>
+                <option>Facilitator</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Contact Number</label>
+            <input type="tel" id="si-phone" placeholder="e.g. 082 000 0000" />
+          </div>
+          <div class="form-group">
+            <label>Emergency Contact Name &amp; Number</label>
+            <input type="text" id="si-emergency" placeholder="Name — 082 000 0000" />
+          </div>
+          <div class="form-group">
+            <label>Dietary / Medical Notes (if any)</label>
+            <textarea id="si-medical" placeholder="Allergies, medication, special dietary requirements..."></textarea>
+          </div>
+          <button type="submit" class="btn-primary">✦ Sign In to Camp ✦</button>
+        </form>
+        <div class="success-msg" id="signinSuccess">
+          ✦ You're signed in! Your details have been recorded. Welcome to Camp! ✦
+        </div>
+        <div class="sheet-link">
+          📊 All sign-ins sync to the camp register:
+          <a href="YOUR_GOOGLE_SHEET_LINK_HERE" target="_blank" id="sheetLink">Open Google Sheet ↗</a>
+        </div>
+        <p style="font-size:0.75rem;color:rgba(253,250,243,0.4);margin-top:8px;">
+          <em>To connect this to Google Sheets: replace <code>YOUR_GOOGLE_SHEET_LINK_HERE</code> in the HTML, and add your Google Apps Script Web App URL to the <code>SHEET_WEBHOOK_URL</code> constant in the script below.</em>
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">ℹ️</span> Camp Information</div>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="label">Location</div>
+            <div class="value">Richmond, KwaZulu-Natal Midlands</div>
+          </div>
+          <div class="info-item">
+            <div class="label">Year</div>
+            <div class="value">2026 National Camp</div>
+          </div>
+          <div class="info-item">
+            <div class="label">Theme</div>
+            <div class="value">4 Pillars of Land Service</div>
+          </div>
+          <div class="info-item">
+            <div class="label">Province</div>
+            <div class="value">KwaZulu-Natal</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SCHEDULE ══ -->
+    <div id="tab-schedule" class="tab-panel">
+      <div class="card">
+        <div class="card-title"><span class="icon">📅</span> Camp Programme</div>
+        <div class="schedule-day">
+          <div class="schedule-day-title">Day 1 — Arrival & Orientation</div>
+          <div class="schedule-row"><span class="schedule-time">08:00</span><span class="schedule-event">Registration & Sign In</span></div>
+          <div class="schedule-row"><span class="schedule-time">09:30</span><span class="schedule-event">Opening Ceremony & Welcome</span></div>
+          <div class="schedule-row"><span class="schedule-time">11:00</span><span class="schedule-event">Orientation Walk & Campsite Tour</span></div>
+          <div class="schedule-row"><span class="schedule-time">13:00</span><span class="schedule-event">Lunch</span></div>
+          <div class="schedule-row"><span class="schedule-time">14:30</span><span class="schedule-event">Introduction: 4 Pillars of Land Service</span></div>
+          <div class="schedule-row"><span class="schedule-time">16:30</span><span class="schedule-event">Arts & Crafts Session 1</span></div>
+          <div class="schedule-row"><span class="schedule-time">18:00</span><span class="schedule-event">Dinner & Evening Devotion</span></div>
+          <div class="schedule-row"><span class="schedule-time">20:00</span><span class="schedule-event">Campfire & KZN Trivia Night</span></div>
+        </div>
+        <div class="schedule-day">
+          <div class="schedule-day-title">Day 2 — Service & Learning</div>
+          <div class="schedule-row"><span class="schedule-time">07:00</span><span class="schedule-event">Morning Devotion & Breakfast</span></div>
+          <div class="schedule-row"><span class="schedule-time">09:00</span><span class="schedule-event">Land Service Projects</span></div>
+          <div class="schedule-row"><span class="schedule-time">13:00</span><span class="schedule-event">Lunch</span></div>
+          <div class="schedule-row"><span class="schedule-time">14:30</span><span class="schedule-event">Richmond History Walk</span></div>
+          <div class="schedule-row"><span class="schedule-time">16:00</span><span class="schedule-event">Arts & Crafts Session 2</span></div>
+          <div class="schedule-row"><span class="schedule-time">18:00</span><span class="schedule-event">Dinner</span></div>
+          <div class="schedule-row"><span class="schedule-time">19:30</span><span class="schedule-event">Group Reflection & Team Building</span></div>
+        </div>
+        <div class="schedule-day">
+          <div class="schedule-day-title">Day 3 — Celebration & Closing</div>
+          <div class="schedule-row"><span class="schedule-time">07:00</span><span class="schedule-event">Morning Devotion & Breakfast</span></div>
+          <div class="schedule-row"><span class="schedule-time">09:00</span><span class="schedule-event">Final Land Service Activities</span></div>
+          <div class="schedule-row"><span class="schedule-time">11:00</span><span class="schedule-event">Arts & Crafts Display & Showcase</span></div>
+          <div class="schedule-row"><span class="schedule-time">13:00</span><span class="schedule-event">Closing Lunch</span></div>
+          <div class="schedule-row"><span class="schedule-time">14:30</span><span class="schedule-event">Closing Ceremony & Awards</span></div>
+          <div class="schedule-row"><span class="schedule-time">16:00</span><span class="schedule-event">Departure</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ RICHMOND HISTORY ══ -->
+    <div id="tab-richmond" class="tab-panel">
+      <div class="card">
+        <div class="card-title"><span class="icon">🏛️</span> Richmond — A Story of Survival & Firsts</div>
+        <p style="font-size:0.9rem;line-height:1.65;color:var(--off-white);margin-bottom:22px;font-style:italic;border-left:3px solid var(--gold);padding-left:14px;">
+          Imagine it's 1850. You've just spent months on a cramped wooden ship called the <em>Minerva</em>, dreaming of a fresh start — and then your ship slams into a reef and sinks. Welcome to Africa.
+        </p>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-year">PRE-1850 — The First Peoples</div>
+            <div class="timeline-text">The <strong>San (Bushmen)</strong> were the ultimate survivalists — using ostrich shells as water bottles, brewing secret beetle-based poisons for hunting, and leaving "spirit paintings" on rocks made with <strong>eland blood</strong> that still haven't faded. Hidden in the valleys were the <strong>amaBhaca</strong> ("People who Hide"), refugees who fled the legendary Zulu armies and used Richmond's rugged hills as a natural fortress.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">1850 — The Byrne Settlers Arrive</div>
+            <div class="timeline-text">British immigrants brought out by J.C. Byrne & Co. arrived, but their ship <em>Minerva</em> wrecked in Durban Bay. They hiked inland with almost nothing, finding wilderness instead of the promised paradise. One desperate family lived under a tarpaulin stretched over their <strong>four-poster bed</strong> for months. The town was first called <strong>Beaulieu-on-Illovo</strong>, then renamed Richmond after the Duke of Richmond.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">19th Century — A Town of Firsts</div>
+            <div class="timeline-text">Richmond earned a remarkable string of records: <strong>oldest tennis club</strong> in South Africa, the <strong>first girls' boarding school</strong> in KwaZulu-Natal, the <strong>oldest consecrated Anglican Church</strong> in the province, and the birthplace of <strong>Dr Albert Hoffa</strong> — credited as the world's first modern bone doctor (orthopaedic surgeon).</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">1906 — The Bambatha Rebellion</div>
+            <div class="timeline-text">Richmond became a flashpoint for one of SA's most significant colonial-era uprisings. After two British officers were killed at nearby Byrne during enforcement of a Poll Tax, <strong>martial law</strong> was declared and the Bambatha Rebellion ignited — a massive moment of resistance that changed South African history forever.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">Anglo-Boer War Era</div>
+            <div class="timeline-text">The town and surrounding hills saw several skirmishes during the Anglo-Boer War. Artifacts from this period are preserved in the Richmond Byrne Museum. The <strong>Old Court House</strong> (now Heritage House) and <strong>Blarney Cottage</strong> — a rare unchanged settler home and national monument — still stand.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">Today — Agricultural Heart of the Midlands</div>
+            <div class="timeline-text">Richmond is a farming community focused on <strong>forestry, timber, sugar cane, poultry, and dairy</strong>. Its main street retains Victorian architecture. <strong>Baynesfield Estate</strong>, pioneered by Joseph Baynes (a founder of the SA dairy industry), was bequeathed to the nation. Richmond falls under the uMgungundlovu District Municipality.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ KZN TRIVIA ══ -->
+    <div id="tab-trivia" class="tab-panel">
+      <div class="card">
+        <div class="card-title"><span class="icon">🌍</span> Amazing KZN Trivia</div>
+
+        <div class="trivia-section">
+          <div class="trivia-heading">🏆 World Records & Geographic Wonders</div>
+          <ul class="trivia-list">
+            <li><strong>World's Smallest Desert:</strong> Near Port Edward on the South Coast, the Red Desert is only 200 metres wide — made of unique crimson soil.</li>
+            <li><strong>World's Second-Highest Waterfall:</strong> Tugela Falls in Royal Natal National Park plunges nearly 948 metres down five stages.</li>
+            <li><strong>Highest Gorge Swing:</strong> The Wild Gorge Swing at Oribi Gorge drops 165 metres — like leaping off a 55-storey building!</li>
+            <li><strong>Africa's Longest Promenade:</strong> Durban's beachfront promenade stretches 8 km — perfect for cycling and skating.</li>
+            <li><strong>Highest Peak in SA:</strong> Mafadi at 3,450 metres is the highest point in South Africa.</li>
+          </ul>
+        </div>
+
+        <div class="trivia-section">
+          <div class="trivia-heading">🦈 Wild Ocean & Nature</div>
+          <ul class="trivia-list">
+            <li><strong>Greatest Shoal on Earth:</strong> Every winter, KZN hosts the Sardine Run — one of the planet's largest animal migrations, attracting thousands of dolphins, sharks, and whales in a massive feeding frenzy.</li>
+            <li><strong>Saved from Extinction:</strong> Hluhluwe-iMfolozi Park is credited with saving the <strong>white rhino</strong> from extinction and holds one of the world's largest populations.</li>
+            <li><strong>iSimangaliso Wetland Park</strong> means "Miracle and Wonder" in isiZulu — a UNESCO World Heritage Site where you can see hippos, crocodiles, and sea turtle nesting sites all in one place.</li>
+            <li><strong>Rock Art:</strong> Over 35,000–40,000 individual San paintings are recorded across 600+ sites in the Drakensberg.</li>
+          </ul>
+        </div>
+
+        <div class="trivia-section">
+          <div class="trivia-heading">🇿🇦 Culture & History</div>
+          <ul class="trivia-list">
+            <li><strong>People of Heaven:</strong> "KwaZulu" means "Place of the Zulu" and the Zulu people are called "the people of heaven."</li>
+            <li><strong>India Outside India:</strong> Durban has the largest Indian community living outside of India anywhere in the world.</li>
+            <li><strong>The Only Province with a King:</strong> KZN is the only SA province with a constitutional provision for a Monarch — the Zulu King.</li>
+            <li><strong>Tony Hawk in Umhlanga:</strong> Gateway Shopping Centre has a skate park designed by legendary skater Tony Hawk.</li>
+            <li><strong>Mission: Impossible:</strong> Tom Cruise filmed major action sequences for MI8 right in the Central Drakensberg!</li>
+          </ul>
+        </div>
+
+        <div class="trivia-section">
+          <div class="trivia-heading">🏟️ Sports & Industry</div>
+          <ul class="trivia-list">
+            <li><strong>World's Oldest Ultramarathon:</strong> The Comrades Marathon between Durban and Pietermaritzburg is the oldest and largest ultramarathon on earth.</li>
+            <li><strong>Africa's Biggest Horse Race:</strong> The Durban July is the continent's biggest sporting event of its kind — and a massive fashion spectacle.</li>
+            <li><strong>Busiest Port:</strong> Durban has the busiest port in South Africa and one of the largest in the world.</li>
+            <li><strong>World Leader in Sand Mining:</strong> Richards Bay Minerals is the largest sand-mining and mineral-processing operation on Earth.</li>
+            <li><strong>Plastic Road:</strong> KZN built the country's first road made from recycled plastic — equivalent to about 40,000 milk cartons.</li>
+            <li><strong>Size of Portugal:</strong> At ~94,361 km², KZN is roughly the same size as Portugal — South Africa's third-smallest province but second-largest by population (nearly 13 million people).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ARTS & CRAFTS ══ -->
+    <div id="tab-crafts" class="tab-panel">
+      <div class="card">
+        <div class="card-title"><span class="icon">🎨</span> Arts & Crafts Ideas</div>
+        <p style="font-size:0.85rem;color:var(--gold-pale);margin-bottom:18px;font-style:italic;">All activities aligned with the 4 Pillars of Land Service</p>
+        <div class="craft-grid">
+          <div class="craft-card"><div class="craft-icon">🎄</div><div class="craft-name">Christmas Ornaments</div><div class="craft-desc">Using air-dry clay to shape and paint festive decorations.</div></div>
+          <div class="craft-card"><div class="craft-icon">🍂</div><div class="craft-name">Nature Bookmarks</div><div class="craft-desc">Press leaves and flowers into bookmarks using plastic containers.</div></div>
+          <div class="craft-card"><div class="craft-icon">💅</div><div class="craft-name">Nail Polish Flowers</div><div class="craft-desc">Wire flowers and shapes created using nail polish on water.</div></div>
+          <div class="craft-card"><div class="craft-icon">🐚</div><div class="craft-name">Painted Seashells</div><div class="craft-desc">Paint designs onto seashells collected from the KZN coast.</div></div>
+          <div class="craft-card"><div class="craft-icon">☀️</div><div class="craft-name">Sun-Dried Tote Bags</div><div class="craft-desc">Sun-dried art on cotton tote bags — unique wearable creations.</div></div>
+          <div class="craft-card"><div class="craft-icon">🧦</div><div class="craft-name">Leaf-Print Socks</div><div class="craft-desc">Hammer leaves and flowers into white socks for natural prints.</div></div>
+          <div class="craft-card"><div class="craft-icon">🔲</div><div class="craft-name">Mosaic CD Coasters</div><div class="craft-desc">Cut old CDs into blocks and heat-fuse into mosaic coasters.</div></div>
+          <div class="craft-card"><div class="craft-icon">🌈</div><div class="craft-name">Faux Stained Glass</div><div class="craft-desc">Plastic containers, Mod Podge and food colouring for a stained-glass effect.</div></div>
+          <div class="craft-card"><div class="craft-icon">🐻</div><div class="craft-name">Pompom Bear</div><div class="craft-desc">Craft adorable bears from colourful wool pompoms.</div></div>
+          <div class="craft-card"><div class="craft-icon">🎑</div><div class="craft-name">Eco Suncatchers</div><div class="craft-desc">Eco-friendly suncatchers using natural and recycled materials.</div></div>
+          <div class="craft-card"><div class="craft-icon">❄️</div><div class="craft-name">Christmas Snow Globes</div><div class="craft-desc">DIY snow globes with festive figures and glitter.</div></div>
+          <div class="craft-card"><div class="craft-icon">🪨</div><div class="craft-name">Rock Footprint Clay Art</div><div class="craft-desc">Use rocks to press a footprint into clay, then paint it.</div></div>
+          <div class="craft-card"><div class="craft-icon">🧂</div><div class="craft-name">Salt Painting</div><div class="craft-desc">Apply watercolour over salt crystals for stunning texture effects.</div></div>
+          <div class="craft-card"><div class="craft-icon">🔮</div><div class="craft-name">Marble Christmas Magnets</div><div class="craft-desc">Clear flat marbles with Christmas napkin backgrounds as fridge magnets.</div></div>
+          <div class="craft-card"><div class="craft-icon">🌲</div><div class="craft-name">Toilet Roll Christmas Tree</div><div class="craft-desc">Stack and decorate toilet paper rolls into a festive Christmas tree.</div></div>
+          <div class="craft-card"><div class="craft-icon">✝️</div><div class="craft-name">Origami Flower Cross</div><div class="craft-desc">DIY origami flower cross wall hanging — meaningful and decorative.</div></div>
+          <div class="craft-card"><div class="craft-icon">🌀</div><div class="craft-name">Quilling Paper Art</div><div class="craft-desc">Roll and shape paper strips into intricate quilling designs.</div></div>
+          <div class="craft-card"><div class="craft-icon">🌸</div><div class="craft-name">Wind Charm</div><div class="craft-desc">Plastic bottle wind charms decorated with pressed leaves and flowers.</div></div>
+          <div class="craft-card"><div class="craft-icon">☕</div><div class="craft-name">Coffee Painting</div><div class="craft-desc">Use brewed coffee as "ink" to paint artwork on paper or bottle bases.</div></div>
+          <div class="craft-card"><div class="craft-icon">🌿</div><div class="craft-name">Nature Glass Coaster</div><div class="craft-desc">Arrange flowers and leaves on a glass bottle lid with resin to make coasters.</div></div>
+          <div class="craft-card"><div class="craft-icon">🧺</div><div class="craft-name">Newspaper Seed Baskets</div><div class="craft-desc">Weave mini baskets from newspapers to hold Agrimark-sponsored seeds.</div></div>
+          <div class="craft-card"><div class="craft-icon">🔑</div><div class="craft-name">Leather Key Rings</div><div class="craft-desc">Craft personalised leather key rings with stamps or pyrography.</div></div>
+          <div class="craft-card"><div class="craft-icon">💎</div><div class="craft-name">Bag Charms</div><div class="craft-desc">Fabric strands, key chains, and colourful beads for bag/bag charms.</div></div>
+          <div class="craft-card"><div class="craft-icon">💐</div><div class="craft-name">Hammered Flower Card</div><div class="craft-desc">Gently hammer flowers and leaves into handmade greeting cards.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ FEEDBACK ══ -->
+    <div id="tab-feedback" class="tab-panel">
+      <div class="card">
+        <div class="card-title"><span class="icon">💬</span> Camp Feedback Form</div>
+        <form id="feedbackForm">
+          <div class="form-group">
+            <label>Your Name (optional)</label>
+            <input type="text" id="fb-name" placeholder="Anonymous if left blank" />
+          </div>
+          <div class="form-group">
+            <label>Group / Region</label>
+            <select id="fb-group">
+              <option value="">— Select —</option>
+              <option>Durban North</option>
+              <option>Durban South</option>
+              <option>Pietermaritzburg</option>
+              <option>Richards Bay</option>
+              <option>Ladysmith</option>
+              <option>Newcastle</option>
+              <option>South Coast</option>
+              <option>Midlands</option>
+              <option>Other KZN</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Overall Camp Experience</label>
+            <div class="stars" id="overallStars">
+              <span class="star" data-val="1" onclick="setRating('overall',1)">★</span>
+              <span class="star" data-val="2" onclick="setRating('overall',2)">★</span>
+              <span class="star" data-val="3" onclick="setRating('overall',3)">★</span>
+              <span class="star" data-val="4" onclick="setRating('overall',4)">★</span>
+              <span class="star" data-val="5" onclick="setRating('overall',5)">★</span>
+            </div>
+            <div class="rating-label" id="overallLabel">Click a star to rate</div>
+          </div>
+
+          <div class="form-group">
+            <label>Programme Quality</label>
+            <div class="stars" id="programmeStars">
+              <span class="star" data-val="1" onclick="setRating('programme',1)">★</span>
+              <span class="star" data-val="2" onclick="setRating('programme',2)">★</span>
+              <span class="star" data-val="3" onclick="setRating('programme',3)">★</span>
+              <span class="star" data-val="4" onclick="setRating('programme',4)">★</span>
+              <span class="star" data-val="5" onclick="setRating('programme',5)">★</span>
+            </div>
+            <div class="rating-label" id="programmeLabel">Click a star to rate</div>
+          </div>
+
+          <div class="form-group">
+            <label>Arts &amp; Crafts Sessions</label>
+            <div class="stars" id="craftsStars">
+              <span class="star" data-val="1" onclick="setRating('crafts',1)">★</span>
+              <span class="star" data-val="2" onclick="setRating('crafts',2)">★</span>
+              <span class="star" data-val="3" onclick="setRating('crafts',3)">★</span>
+              <span class="star" data-val="4" onclick="setRating('crafts',4)">★</span>
+              <span class="star" data-val="5" onclick="setRating('crafts',5)">★</span>
+            </div>
+            <div class="rating-label" id="craftsLabel">Click a star to rate</div>
+          </div>
+
+          <div class="form-group">
+            <label>Accommodation &amp; Catering</label>
+            <div class="stars" id="accomStars">
+              <span class="star" data-val="1" onclick="setRating('accom',1)">★</span>
+              <span class="star" data-val="2" onclick="setRating('accom',2)">★</span>
+              <span class="star" data-val="3" onclick="setRating('accom',3)">★</span>
+              <span class="star" data-val="4" onclick="setRating('accom',4)">★</span>
+              <span class="star" data-val="5" onclick="setRating('accom',5)">★</span>
+            </div>
+            <div class="rating-label" id="accomLabel">Click a star to rate</div>
+          </div>
+
+          <div class="form-group">
+            <label>What did you enjoy most?</label>
+            <div class="checkbox-group">
+              <div class="checkbox-item"><input type="checkbox" id="enj1" value="Land Service Projects"><label for="enj1">Land Service Projects</label></div>
+              <div class="checkbox-item"><input type="checkbox" id="enj2" value="Arts & Crafts"><label for="enj2">Arts & Crafts</label></div>
+              <div class="checkbox-item"><input type="checkbox" id="enj3" value="Campfire & Trivia"><label for="enj3">Campfire & Trivia</label></div>
+              <div class="checkbox-item"><input type="checkbox" id="enj4" value="History Walk"><label for="enj4">History Walk</label></div>
+              <div class="checkbox-item"><input type="checkbox" id="enj5" value="Team Building"><label for="enj5">Team Building</label></div>
+              <div class="checkbox-item"><input type="checkbox" id="enj6" value="New Friendships"><label for="enj6">New Friendships</label></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>What could be improved?</label>
+            <textarea id="fb-improve" placeholder="Share your honest thoughts — your feedback helps make future camps better..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Any additional comments or suggestions?</label>
+            <textarea id="fb-comments" placeholder="Ideas, highlights, shout-outs..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Would you attend again?</label>
+            <select id="fb-return">
+              <option value="">— Select —</option>
+              <option>Definitely Yes!</option>
+              <option>Probably Yes</option>
+              <option>Not Sure</option>
+              <option>Probably Not</option>
+              <option>No</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn-primary">✦ Submit Feedback ✦</button>
+        </form>
+        <div class="success-msg" id="feedbackSuccess">
+          ✦ Thank you for your feedback! It means a great deal to the Land Service team. ✦
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <footer>
+    Land Service KZN National Camp 2026 &nbsp;✦&nbsp; Richmond, KwaZulu-Natal &nbsp;✦&nbsp; Building Tomorrow's Leaders
+  </footer>
+</div><!-- /app -->
+
+<script>
+  // ── TABS ──
+  function showTab(id) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+
+  // ── GOOGLE SHEETS INTEGRATION ──
+  // Replace this URL with your Google Apps Script Web App URL after deploying
+  const SHEET_WEBHOOK_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+
+  async function postToSheet(data) {
+    if (SHEET_WEBHOOK_URL === 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE') {
+      console.log('Sheet webhook not configured. Data:', data);
+      return true; // simulate success in demo mode
+    }
+    try {
+      await fetch(SHEET_WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      return true;
+    } catch (e) {
+      console.error('Sheet post error:', e);
+      return false;
+    }
+  }
+
+  // ── SIGN IN FORM ──
+  document.getElementById('signinForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const data = {
+      type: 'signin',
+      timestamp: new Date().toISOString(),
+      name: document.getElementById('si-name').value,
+      region: document.getElementById('si-region').value,
+      role: document.getElementById('si-role').value,
+      phone: document.getElementById('si-phone').value,
+      emergency: document.getElementById('si-emergency').value,
+      medical: document.getElementById('si-medical').value
+    };
+    await postToSheet(data);
+    this.style.display = 'none';
+    document.getElementById('signinSuccess').style.display = 'block';
+  });
+
+  // ── STAR RATINGS ──
+  const ratings = {};
+  const ratingLabels = ['','Poor','Fair','Good','Very Good','Excellent!'];
+
+  function setRating(key, val) {
+    ratings[key] = val;
+    const container = document.getElementById(key + 'Stars');
+    container.querySelectorAll('.star').forEach((s, i) => {
+      s.classList.toggle('active', i < val);
+    });
+    document.getElementById(key + 'Label').textContent = ratingLabels[val] || '';
+  }
+
+  // ── FEEDBACK FORM ──
+  document.getElementById('feedbackForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const enjoyed = [...document.querySelectorAll('.checkbox-group input:checked')].map(c => c.value);
+    const data = {
+      type: 'feedback',
+      timestamp: new Date().toISOString(),
+      name: document.getElementById('fb-name').value || 'Anonymous',
+      group: document.getElementById('fb-group').value,
+      ratings: { ...ratings },
+      enjoyed: enjoyed.join(', '),
+      improvements: document.getElementById('fb-improve').value,
+      comments: document.getElementById('fb-comments').value,
+      wouldReturn: document.getElementById('fb-return').value
+    };
+    await postToSheet(data);
+    this.style.display = 'none';
+    document.getElementById('feedbackSuccess').style.display = 'block';
+  });
+</script>
+</body>
+</html>
