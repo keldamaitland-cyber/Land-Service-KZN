@@ -216,22 +216,41 @@ export default function AdminTab({ signIns, onClear }: { signIns: SignIn[]; onCl
         )}
 
         <div style={{ marginTop: 20, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
-          <button
-            onClick={() => setUnlocked(false)}
-            style={{
-              padding: "8px 16px",
-              background: "rgba(201,162,39,0.08)",
-              border: "1px solid rgba(201,162,39,0.3)",
-              borderRadius: 4,
-              color: "var(--gold-pale)",
-              fontFamily: "'Cinzel', serif",
-              fontSize: "0.75rem",
-              letterSpacing: "0.1em",
-              cursor: "pointer",
-            }}
-          >
-            🔒 Lock
-          </button>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <button
+              onClick={() => setUnlocked(false)}
+              style={{
+                padding: "8px 16px",
+                background: "rgba(201,162,39,0.08)",
+                border: "1px solid rgba(201,162,39,0.3)",
+                borderRadius: 4,
+                color: "var(--gold-pale)",
+                fontFamily: "'Cinzel', serif",
+                fontSize: "0.75rem",
+                letterSpacing: "0.1em",
+                cursor: "pointer",
+              }}
+            >
+              🔒 Lock
+            </button>
+            <button
+              onClick={() => exportCSV(signIns)}
+              disabled={signIns.length === 0}
+              style={{
+                padding: "8px 16px",
+                background: signIns.length === 0 ? "rgba(201,162,39,0.04)" : "rgba(201,162,39,0.15)",
+                border: "1px solid rgba(201,162,39,0.3)",
+                borderRadius: 4,
+                color: signIns.length === 0 ? "rgba(245,228,160,0.3)" : "var(--gold-light)",
+                fontFamily: "'Cinzel', serif",
+                fontSize: "0.75rem",
+                letterSpacing: "0.1em",
+                cursor: signIns.length === 0 ? "not-allowed" : "pointer",
+              }}
+            >
+              ⬇ Export CSV
+            </button>
+          </div>
 
           {!confirmClear ? (
             <button

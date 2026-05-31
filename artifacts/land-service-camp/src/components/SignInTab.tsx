@@ -134,19 +134,18 @@ export default function SignInTab({ onSignIn }: Props) {
             ✦ You are signed in! Your details have been recorded. Welcome to Camp! ✦
           </div>
         )}
-        <div className="sheet-link">
-          📊 All sign-ins sync to the camp register:&nbsp;
-          <a
-            href={import.meta.env.VITE_GOOGLE_SHEET_URL || "#"}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Open Google Sheet ↗
-          </a>
-        </div>
-        <p style={{ fontSize: "0.75rem", color: "rgba(253,250,243,0.4)", marginTop: "8px" }}>
-          <em>To connect to Google Sheets: set <code>VITE_SHEET_WEBHOOK_URL</code> and <code>VITE_GOOGLE_SHEET_URL</code> in your environment.</em>
-        </p>
+        {import.meta.env.VITE_GOOGLE_SHEET_URL && (
+          <div className="sheet-link">
+            📊 All sign-ins sync to the camp register:&nbsp;
+            <a
+              href={import.meta.env.VITE_GOOGLE_SHEET_URL}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open Google Sheet ↗
+            </a>
+          </div>
+        )}
       </div>
 
       <div className="card">
