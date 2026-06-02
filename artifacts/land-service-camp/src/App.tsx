@@ -7,6 +7,7 @@ import ArtsAndCraftsTab from "./components/ArtsAndCraftsTab";
 import FeedbackTab from "./components/FeedbackTab";
 import AdminTab from "./components/AdminTab";
 import QRCodeTab from "./components/QRCodeTab";
+import { useAnnouncement } from "./hooks/useAnnouncement";
 
 export interface SignInRecord {
   timestamp: string;
@@ -44,9 +45,16 @@ const tabs = [
   { id: "admin",    label: "🔐 Admin" },
 ];
 
+const BANNER_TYPE_STYLES = {
+  info:    { bg: "rgba(14,80,140,0.92)",  border: "rgba(56,182,255,0.5)",  icon: "ℹ️" },
+  urgent:  { bg: "rgba(140,20,20,0.95)",  border: "rgba(255,80,80,0.6)",   icon: "🚨" },
+  success: { bg: "rgba(16,80,40,0.92)",   border: "rgba(74,222,128,0.5)",  icon: "✅" },
+};
+
 export default function App() {
   const [activeTab, setActiveTab] = useState("signin");
   const [signIns, setSignIns] = useState<SignInRecord[]>(loadSignIns);
+  const { announcement, dismiss } = useAnnouncement();
 
   const handleNewSignIn = useCallback((record: SignInRecord) => {
     setSignIns((prev) => {
@@ -133,6 +141,70 @@ export default function App() {
             </button>
           ))}
         </nav>
+
+        {announcement && (() => {
+          const s = BANNER_TYPE_STYLES[announcement.type];
+          return (
+            <div style={{
+              position: "sticky",
+              top: 0,
+              zIndex: 200,
+              background: s.bg,
+              borderBottom: `1px solid ${s.border}`,
+              borderTop: `1px solid ${s.border}`,
+              padding: "12px 16px",
+              display: "flex",
+              alignItems: "flex-start",
+              gap: 12,
+              backdropFilter: "blur(8px)",
+              animation: "bannerSlideIn 0.3s ease",
+            }}>
+              <span style={{ fontSize: "1.2rem", flexShrink: 0, marginTop: 1 }}>{s.icon}</span>
+              <div style={{ flex: 1 }}>
+                <div style={{
+                  fontFamily: "'Lato', sans-serif",
+                  fontSize: "0.95rem",
+                  fontWeight: 700,
+                  color: "#ffffff",
+                  lineHeight: 1.4,
+                }}>
+                  {announcement.message}
+                </div>
+                <div style={{
+                  fontFamily: "'Cinzel', serif",
+                  fontSize: "0.6rem",
+                  letterSpacing: "0.12em",
+                  color: "rgba(255,255,255,0.55)",
+                  textTransform: "uppercase",
+                  marginTop: 3,
+                }}>
+                  Camp Announcement · tap ✕ to dismiss
+                </div>
+              </div>
+              <button
+                onClick={() => dismiss(announcement.id)}
+                style={{
+                  background: "rgba(255,255,255,0.12)",
+                  border: "1px solid rgba(255,255,255,0.2)",
+                  borderRadius: "50%",
+                  width: 28,
+                  height: 28,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  color: "#fff",
+                  fontSize: "0.9rem",
+                  flexShrink: 0,
+                  lineHeight: 1,
+                }}
+                aria-label="Dismiss"
+              >
+                ✕
+              </button>
+            </div>
+          );
+        })()}
 
         <div className="camp-content">
           <div className="tab-panel" key={activeTab}>
