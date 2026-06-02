@@ -6,6 +6,7 @@ import KZNTriviaTab from "./components/KZNTriviaTab";
 import ArtsAndCraftsTab from "./components/ArtsAndCraftsTab";
 import FeedbackTab from "./components/FeedbackTab";
 import AdminTab from "./components/AdminTab";
+import QRCodeTab from "./components/QRCodeTab";
 
 export interface SignInRecord {
   timestamp: string;
@@ -39,6 +40,7 @@ const tabs = [
   { id: "trivia",   label: "🌍 KZN Trivia" },
   { id: "crafts",   label: "🎨 Arts & Crafts" },
   { id: "feedback", label: "💬 Feedback" },
+  { id: "qr",       label: "📱 QR Code" },
   { id: "admin",    label: "🔐 Admin" },
 ];
 
@@ -67,6 +69,7 @@ export default function App() {
       case "trivia":   return <KZNTriviaTab />;
       case "crafts":   return <ArtsAndCraftsTab />;
       case "feedback": return <FeedbackTab />;
+      case "qr":       return <QRCodeTab />;
       case "admin":    return <AdminTab signIns={signIns} onClear={handleClear} />;
       default:         return <SignInTab onSignIn={handleNewSignIn} />;
     }
