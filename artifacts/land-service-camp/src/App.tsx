@@ -63,7 +63,7 @@ export default function App() {
 
   function renderTab() {
     switch (activeTab) {
-      case "signin":   return <SignInTab onSignIn={handleNewSignIn} />;
+      case "signin":   return <SignInTab onSignIn={handleNewSignIn} signIns={signIns} />;
       case "schedule": return <ScheduleTab />;
       case "richmond": return <RichmondHistoryTab />;
       case "trivia":   return <KZNTriviaTab />;
@@ -71,7 +71,7 @@ export default function App() {
       case "feedback": return <FeedbackTab />;
       case "qr":       return <QRCodeTab />;
       case "admin":    return <AdminTab signIns={signIns} onClear={handleClear} />;
-      default:         return <SignInTab onSignIn={handleNewSignIn} />;
+      default:         return <SignInTab onSignIn={handleNewSignIn} signIns={signIns} />;
     }
   }
 
