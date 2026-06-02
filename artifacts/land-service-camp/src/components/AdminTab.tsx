@@ -12,6 +12,30 @@ interface SignIn {
 
 const ADMIN_PIN = "2026";
 
+function exportCSV(signIns: SignIn[]) {
+  const headers = ["#", "Timestamp", "Full Name", "Region / Group", "Role", "Contact Number", "Emergency Contact", "Dietary / Medical Notes"];
+  const rows = signIns.map((s, i) => [
+    String(i + 1),
+    new Date(s.timestamp).toLocaleString("en-ZA"),
+    s.name,
+    s.region,
+    s.role,
+    s.phone,
+    s.emergency,
+    s.medical,
+  ]);
+  const csv = [headers, ...rows]
+    .map((row) => row.map((cell) => `"${String(cell ?? "").replace(/"/g, '""')}"`).join(","))
+    .join("\r\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `LS_Camp_2026_SignIns_${new Date().toISOString().slice(0, 10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 const roleBadgeColor: Record<string, string> = {
   "Camper (Youth)": "#1a4731",
   "Junior Leader": "#236040",

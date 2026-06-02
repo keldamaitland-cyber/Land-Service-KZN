@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
+import { VitePWA } from "vite-plugin-pwa";
 
 const rawPort = process.env.PORT;
 
@@ -32,6 +33,47 @@ export default defineConfig({
     react(),
     tailwindcss(),
     runtimeErrorOverlay(),
+    VitePWA({
+      registerType: "autoUpdate",
+      includeAssets: ["icon.svg", "apple-touch-icon.png"],
+      manifest: {
+        name: "Land Service KZN National Camp 2026",
+        short_name: "LS Camp 2026",
+        description: "Camp management app for the Land Service KZN National Camp 2026 — Richmond, KwaZulu-Natal.",
+        theme_color: "#1a4731",
+        background_color: "#0e2a1c",
+        display: "standalone",
+        orientation: "portrait-primary",
+        start_url: basePath,
+        scope: basePath,
+        icons: [
+          {
+            src: "icon.svg",
+            sizes: "any",
+            type: "image/svg+xml",
+            purpose: "any",
+          },
+          {
+            src: "icon.svg",
+            sizes: "any",
+            type: "image/svg+xml",
+            purpose: "maskable",
+          },
+        ],
+      },
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff,woff2,ttf,eot}"],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/script\.google\.com\/.*/i,
+            handler: "NetworkOnly",
+          },
+        ],
+      },
+      devOptions: {
+        enabled: false,
+      },
+    }),
     ...(process.env.NODE_ENV !== "production" &&
     process.env.REPL_ID !== undefined
       ? [
